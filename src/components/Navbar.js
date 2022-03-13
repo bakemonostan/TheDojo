@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 // styles
 import './Navbar.css';
@@ -8,6 +9,8 @@ import { useLogout } from '../hooks/useLogout';
 
 function Navbar() {
   const { logOut, isPending } = useLogout();
+  const { user } = useAuthContext();
+
   return (
     <div className='navbar'>
       <ul>
@@ -15,24 +18,34 @@ function Navbar() {
           <img src={Temple} alt='dojo-logo' />
           <span>The Dojo</span>
         </li>
-        <li>
-          <Link to='login'>Login</Link>
-        </li>
-        <li>
-          <Link to='signup'>Signup</Link>
-        </li>
-        <li>
-          {!isPending && (
-            <button className='btn' onClick={logOut}>
-              Signout
-            </button>
-          )}
-          {isPending && (
-            <button className='btn' disabled>
-              Signing Out...
-            </button>
-          )}
-        </li>
+        {!user && (
+          <>
+            <li>
+              <Link to='login'>Login</Link>
+            </li>
+            <li>
+              <Link to='signup'>Sign up</Link>
+            </li>
+          </>
+        )}
+        {user && (
+          <li>
+            {!isPending && (
+              <button
+                className='btn'
+                onClick={logOut}
+                element={<Navigate to='/login' />}
+              >
+                Sign out
+              </button>
+            )}
+            {isPending && (
+              <button className='btn' disabled>
+                Signing Out...
+              </button>
+            )}
+          </li>
+        )}
       </ul>
     </div>
   );
