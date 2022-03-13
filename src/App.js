@@ -14,6 +14,7 @@ import Project from './pages/project/Project';
 import './App.css';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
+import OnlineUsers from './components/OnlineUsers';
 
 function App() {
   const { authIsReady, user } = useAuthContext();
@@ -21,14 +22,14 @@ function App() {
     <div className='App'>
       {authIsReady && (
         <BrowserRouter>
-          <Sidebar />
+          {user && <Sidebar />}
           <div className='container'>
             <Navbar />
             <Routes>
               {user && <Route exact path='/' element={<Dashboard />} />}
               {!user && <Route path='/' element={<Navigate to='/login' />} />}
 
-              {user && <Route path='/login' element={<Dashboard />} />}
+              {user && <Route path='/login' element={<Navigate to='/' />} />}
               {!user && <Route path='/login' element={<Login />} />}
 
               {user && <Route path='/create' element={<Create />} />}
@@ -36,7 +37,7 @@ function App() {
                 <Route path='/create' element={<Navigate to='/login' />} />
               )}
 
-              {user && <Route path='/signup' element={<Dashboard />} />}
+              {user && <Route path='/signup' element={<Navigate to='/' />} />}
               {!user && <Route path='/signup' element={<Signup />} />}
 
               {user && <Route path='/projects' element={<Project />} />}
@@ -48,6 +49,7 @@ function App() {
               {!user && <Route path='/projects/:id' element={<Login />} />}
             </Routes>
           </div>
+          {user && <OnlineUsers />}
         </BrowserRouter>
       )}
     </div>
