@@ -1,11 +1,16 @@
+// react hooks
 import { useState } from 'react';
+
+// components
 import ProjectList from '../../components/ProjectList';
+import ProjectFilter from './ProjectFilter';
+
+// Custom hooks
 import { useCollection } from '../../hooks/useCollection';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 // styles
 import './Dashboard.css';
-import ProjectFilter from './ProjectFilter';
 
 export default function Dashboard() {
   const [currentFilter, setCurrentFilter] = useState('all');
@@ -28,7 +33,7 @@ export default function Dashboard() {
           case 'mine':
             let assignedToMe = false;
             document.assignedUsersList.forEach((u) => {
-              if (user.uid === u.id) {
+              if (u.id === user.uid) {
                 assignedToMe = true;
               }
             });
@@ -56,7 +61,7 @@ export default function Dashboard() {
           changeFilter={changeFilter}
         />
       )}
-      {projects && <ProjectList projects={documents} />}
+      {projects && <ProjectList projects={projects} />}
     </div>
   );
 }
